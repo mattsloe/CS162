@@ -3,9 +3,11 @@
 	Author: Matthew Loera
 	Date: 4/5/20
 	Description: This program adds Products into the Shopping Cart and prints out a running total each time.
-	When the user checks out, this program prints an itemized receipt as well as the total. 
+	When the user checks out, this program prints an itemized receipt as well as the total.
+	Sources: Program Assignment sheet and example code for text validation from Module 1
 */
 
+#include <iomanip>
 #include <iostream>
 using namespace std;
 
@@ -16,8 +18,8 @@ const double TAX_RATE = 0; //tax rate
 /*DATA STRUCTURES*/
 struct Product
 {
-	char* productName;
 	double cost;
+	string productName;
 };
 
 /*FUNCTIONS*/
@@ -31,79 +33,119 @@ void displayProduct(Product currentProduct); //takes in a product struct and pri
 
 double runningTotal(Product* cart, int size); //add up the prices of all the items in the cart and returns subtotal
 
-void addToCart(Product addItem, Product* cart, int size); //adds addItem to the cart
-														  //don't forget to increment the cart size
-
 void displayCart(Product* cart, int size); //calls displayProduct() for each Product in cart to print out the cart
 
 int main()
 {
-	Product shoppingCart[1];
-	int cartSize = 1;
+	struct Product shoppingCart[100];
+	int cartSize = 0;
 	
 	bool readyToCheckOut = false;
 	do {
 		/*Prompt for product to add to cart*/
-		Product newItem; //this struct will be used to initialize and add a new item to the cart
+		char prodName[MAX_LENGTH];
 		cout << "Please enter a product name:";
-		getTextInput(newItem.productName, MAX_LENGTH); //use getTextInput to retrieve product name
+		getTextInput(prodName, MAX_LENGTH); //use getTextInput to retrieve product name
+		shoppingCart[cartSize].productName = prodName; //store the productName to the Product in the cart
 
 		cout << "Please enter the price: ";
-		newItem.cost = getNumInput(0, 9999); //use getNumInput to retrieve a valid price from the user
+		shoppingCart[cartSize].cost = getNumInput(0, 9999); //use getNumInput to retrieve a valid price from the user
 
 		/*Echo the product back to the user*/
-		displayProduct(newItem);
-		
-		/*Add item to cart*/
-		addToCart(newItem, shoppingCart, cartSize);
+		displayProduct(shoppingCart[cartSize]);
+
+		/*Add the product to the cart*/
 		cartSize++;
+		
 		/*Prompt for checkout*/
 		cout << "Press 1 to add more items or 2 to check out." << endl;
 		if (getNumInput() == 2) readyToCheckOut = true;
 	} while (!readyToCheckOut);
 
+	/*CHECKOUT*/
+	displayCart(shoppingCart, cartSize);
+	cout << "SUBTOTAL:   " << runningTotal(shoppingCart, cartSize) << endl;
+	cout.setf(ios::fixed, ios::floatfield); cout.setf(ios::showpoint); cout.precision(2);
+	cout << "GRAND TOTAL @" << TAX_RATE * 100 << "% tax :   " << TAX_RATE * runningTotal(shoppingCart, cartSize)+ runningTotal(shoppingCart, cartSize);
+
+	return 0;
+	
+
 	
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file /
 
 void getTextInput(char* inString, int strLen)
 {
-
+	cin.get(inString, strLen);
+	while(!cin) //check if the input failed during data retrieval
+	{
+		cin.clear(); //resets the failbit
+		cin.get(inString, strLen);
+		cin.ignore(1000, '\n');
+	}
+	
 }
 
 double getNumInput()
 {
-	return 0.0;
+	double output = -999.99;
+	cin >> output;	//get input from user
+	while(!cin)
+	{
+		cin.clear();
+		cin.ignore(1000, '\n');	//clear cin buffer
+
+		cout << "You entered illegal input. Please try again: ";
+		cin >> output;
+	}
+	cin.ignore(1000, '\n');	//clear cin buffer
+	return output;
 }
 
 double getNumInput(double min, double max)
 {
-	return 0.0;
+	double output = -999.99;
+	output = getNumInput();	
+	while(output < min || output > max)		//check that output is within bounds
+	{
+		cout << "The number must be between " << min << " and " << max << endl;
+		cout << "Please try again: ";
+		output = getNumInput();
+	}
+	return output;
 }
 
 void displayProduct(Product currentProduct)
 {
+	cout.setf(ios::fixed, ios::floatfield); cout.setf(ios::showpoint); cout.precision(2); //set formatting
+	cout << left << setw(20) << currentProduct.productName << "  |  "; //output product name
+	cout << setw(10) << "$" << currentProduct.cost << endl;  //output the cost
+	
 }
 
 double runningTotal(Product* cart, int size)
 {
-	return 0.0;
+	double total = 0;
+	Product* p = cart;
+	for(int i = 0; i < size; p++, i++)	//iterate through the cart
+	{
+		Product current = *p;
+		total += current.cost; //add the cost to the running total
+	}
+
+	//output the total
+	return total;
 }
 
-void addToCart(Product addItem, Product* cart, int size)
-{
-}
+
 
 void displayCart(Product* cart, int size)
 {
+	Product* p = cart;
+	for (int i = 0; i < size; p++, i++)	//iterate through the cart
+	{
+		displayProduct(*p);
+	}
 }
+
