@@ -17,12 +17,11 @@ const double TAX_RATE = 0; //tax rate
 struct Product
 {
 	char* productName;
-	int strLen; //name length
 	double cost;
 };
 
 /*FUNCTIONS*/
-char* getTextInput(char *inString, int strLen); //takes a reference to a cstring and populates the string with valid input
+void getTextInput(char *inString, int strLen); //takes a reference to a cstring and populates the string with valid input
 
 double getNumInput(); //returns a valid double from user input
 
@@ -39,7 +38,31 @@ void displayCart(Product* cart, int size); //calls displayProduct() for each Pro
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	Product shoppingCart[1];
+	int cartSize = 1;
+	
+	bool readyToCheckOut = false;
+	do {
+		/*Prompt for product to add to cart*/
+		Product newItem; //this struct will be used to initialize and add a new item to the cart
+		cout << "Please enter a product name:";
+		getTextInput(newItem.productName, MAX_LENGTH); //use getTextInput to retrieve product name
+
+		cout << "Please enter the price: ";
+		newItem.cost = getNumInput(0, 9999); //use getNumInput to retrieve a valid price from the user
+
+		/*Echo the product back to the user*/
+		displayProduct(newItem);
+		
+		/*Add item to cart*/
+		addToCart(newItem, shoppingCart, cartSize);
+		cartSize++;
+		/*Prompt for checkout*/
+		cout << "Press 1 to add more items or 2 to check out." << endl;
+		if (getNumInput() == 2) readyToCheckOut = true;
+	} while (!readyToCheckOut);
+
+	
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
@@ -51,11 +74,11 @@ int main()
 //   3. Use the Output window to see build output and other messages
 //   4. Use the Error List window to view errors
 //   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file /
 
-char* getTextInput(char* inString, int strLen)
+void getTextInput(char* inString, int strLen)
 {
-	return nullptr;
+
 }
 
 double getNumInput()
