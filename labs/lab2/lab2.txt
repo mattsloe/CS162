@@ -1,3 +1,8 @@
-all: 
-	g++ -o app app.cpp
+Bug Fixes
 
+o Add #include <cstring>
+o Change function declaration for determinegrade to 
+	char determineGrade(double finalAvg);
+o Change function call in main() from "determinGrade(score)" to "determineGrade(score)" 
+	(spelling)
+o Corrected spelling of function declaration header to determineGrade(double finalAvg)
