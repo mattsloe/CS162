@@ -1,0 +1,1 @@
+Known Bugs: I wrote this program trying to use arrays of Structs and had to change course. Needless to say, I changed course, but there is strange implementation of iteration of the shopping cart for the runningTotal() and displayCart() functions. I didn't get a chance to properly test. 
