@@ -1,0 +1,18 @@
+bool insert(int position, int val, int intList[], int& size){
+	//inserts the value
+	if (position < 100){
+		if (position >= size) size = position+1; //change the array size if the position is greater than the array size
+		intList[position] = val; //put val into the intList at the right index
+		return true;
+	}else return false;
+}
+
+
+
+[ ]
+
+[ 4 40 25 ]
+remove failed
+40 is removed!
+
+[ 4 25 ]
