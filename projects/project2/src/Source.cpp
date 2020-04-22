@@ -1,9 +1,10 @@
-//
-//  main.cpp
-//  Program Desciption: Add student to database, delete student from the database and print database.
-//
-//  Created by Shawli on 4/8/20.
-//  Copyright © 2020 Shawli. All rights reserved.
+//  Name: Song Library
+//  Author: Matthew Loera
+//  Date: 04/20/20
+//  Program Desciption: Project 2
+//  Sources: Course Notes, Lecture Video
+//  
+// 
 //
 
 //Include header files
