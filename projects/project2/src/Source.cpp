@@ -39,10 +39,11 @@ char getInput();
 void executeCommand(char command, SongType songs[], int& size);
 
 //program functions
-void loadData(char& infile); //loads the songs from infile
+void loadData(SongType list[], int& size, const char infile[]); //loads the songs from infile
 void searchByArtist(SongType songs[], int& size); //searches for matching songs in the database and prints matches to screen
 void addSong(SongType songs[], int& size); //prompts user for data to fill SongType, adds it to the database
-void saveSongs(const SongType songs[], const int& size, char& outfile); //saves database to outfile
+void appendSong(SongType songs[], int& size, SongType newSong); //adds a new SongType to the end of the array of SongType
+void saveSongs(const SongType songs[], const int& size,const char outfile[]); //saves database to outfile
 void removeSong(SongType songs[], int& size, int songIndex); //remove song at given index
 void displaySongs(const SongType songs[],const int& size, int songIndex); //displays song at given index
 void displaySongs(const SongType songs[],const int& size); //displays all songs in database
@@ -50,11 +51,7 @@ void displaySongs(const SongType songs[],const int& size); //displays all songs 
 //utility functions
 int getInt();
 int getInt(int min, int max); //getInt with bounds checking
-/*
-void addDB(SongType song[], int& count);
-void deleteDB(SongType song[], int& count);
-void printDB(SongType song[], const int count);
-*/
+
 
 /*MAIN*/
 int main() {
@@ -62,7 +59,8 @@ int main() {
     char input;
     SongType library[ARRAY_MAX_SIZE];
     int size = 0;
-
+    //initialize data
+    loadData(library, size, SONG_FILE);
 	//display menu
     do {
         cout << endl << "SONG DATABASE" << endl
@@ -77,11 +75,13 @@ int main() {
         executeCommand(input, library, size);
     } while (input != 'e');
 
+    //save and exit
+    saveSongs(library,size,SONG_FILE);
     return 0;
 }
 
 
-/*FUNCTION IMPLEMENTATION*/
+/*FUNCTION DEFINITION*/
 char getInput() 
 {
 	cout << "Please enter your selection: ";
@@ -120,32 +120,76 @@ void executeCommand(char command, SongType songs[], int& size)
 }
 
 
-void loadData(char& infile)
+void loadData(SongType list[], int& size, const char infile[])
 {
+    ifstream in;
+    char inputLine[STR_MAX_SIZE];
+    SongType currentSong;
+
+    char inString[STR_MAX_SIZE];
+
+    in.open(infile);
+    if(!in){
+        cerr << "Failed to open " << infile << " for reading!" << endl;
+        exit(1);
+    }
+    do{
+        in.getline(inString,STR_MAX_SIZE-1,';'); //get song name
+        strcpy(currentSong.songName,inString);
+           // in.get(); //throw away the delimiter
+        in.getline(inString, STR_MAX_SIZE-1,';'); //get artist name
+        strcpy(currentSong.artist , inString);
+          //  in.get();
+        in >> currentSong.lengthMin; //get song length
+            in.get();
+        in >> currentSong.lengthSec;
+            in.get();
+        in.getline(inString, STR_MAX_SIZE-1,';'); //get album name
+        strcpy(currentSong.album , inString);
+            in.ignore(STR_MAX_SIZE, '\n'); //throw away newline
+
+        appendSong(list,size,currentSong);
+    }while(!in.eof());
+
+    in.close();
+    cout << "Data imported successfully from " << infile << ". Song count: " << size << endl;
 }
 
-void searchByArtist(SongType& songs, int& size)
+void searchByArtist(SongType songs[], int& size)
 {
+    return;
 }
 
-void addSong(SongType& songs, int& size)
+void addSong(SongType songs[], int& size)
 {
+    return;
 }
 
-void saveSongs(const SongType& songs, const int& size, char& outfile)
+void appendSong(SongType songs[], int& size, SongType newSong)
 {
+    size++;
+    return;
+}
+void saveSongs(const SongType songs[], const int& size,const char outfile[])
+{
+    return;
 }
 
-void removeSong(SongType& songs, int& size, int songIndex)
+void removeSong(SongType songs[], int& size, int songIndex)
 {
+    return;
 }
 
 void displaySongs(const SongType songs[], const int& size, int songIndex)
 {
+        cout << "Song " << songIndex << ": " << songs[songIndex].songName << " by " << songs[songIndex].artist << endl;
 }
 
-void displaySongs(const SongType songs[],const int& size)
+void displaySongs(const SongType songs[],const int& size) //overload previous displaySongs() function to display all songs
 {
+        for(int i = 0; i < size; i++){
+            displaySongs(songs, size, i);
+    }
 }
 
 int getInt()
