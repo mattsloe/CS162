@@ -42,7 +42,7 @@ void executeCommand(char command, SongType songs[], int& size);
 void loadData(SongType list[], int& size, const char infile[]); //loads the songs from infile
 void searchByArtist(SongType songs[], int& size); //searches for matching songs in the database and prints matches to screen
 void readInSong(SongType song); //prompts user for data to fill SongType
-void appendSong(SongType songs[], int& size, const SongType& newSong); //adds a new SongType to the end of the array of SongType
+void appendSong(SongType songs[], int& size, SongType& newSong); //adds a new SongType to the end of the array of SongType
 void saveSongs(const SongType songs[], const int& size,const char outfile[]); //saves database to outfile
 void removeSong(SongType songs[], int& size, int songIndex); //remove song at given index
 void displaySongs(const SongType songs[],int size, int songIndex); //displays song at given index
@@ -146,7 +146,7 @@ void loadData(SongType list[], int& size, const char infile[])
             in.get();
         in >> currentSong.lengthSec;
             in.get();
-        in.getline(inString, STR_MAX_SIZE-1,';'); //get album name
+        in.getline(inString, STR_MAX_SIZE-1,'\n'); //get album name
         strcpy(currentSong.album , inString);
            // in.ignore(STR_MAX_SIZE, '\n'); //throw away newline
 
@@ -167,7 +167,7 @@ void readInSong(SongType song)
     return;
 }
 
-void appendSong(SongType songs[], int& size, const SongType& newSong)
+void appendSong(SongType songs[], int& size, SongType& newSong)
 {
     songs[size] = newSong;
     size++;
