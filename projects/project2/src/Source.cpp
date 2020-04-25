@@ -44,14 +44,11 @@ void loadData(SongType list[], int& size, const char infile[]); //loads the song
 void searchByArtist(SongType songs[], int& size); //searches for matching songs in the database and prints matches to screen
 void readInSong(SongType& song); //prompts user for data to fill SongType
 void appendSong(SongType songs[], int& size, SongType& newSong); //adds a new SongType to the end of the array of SongType
-void saveSongs(const SongType songs[], const int& size,const char outfile[]); //saves database to outfile
+bool saveSongs(const SongType songs[], const int& size,const char outfile[]); //saves database to outfile, returns true if completed successfully
 void removeSong(SongType songs[], int& size, int songIndex); //remove song at given index
 void displaySongs(const SongType songs[],int size, int songIndex); //displays song at given index
 void displaySongs(const SongType songs[],int size); //displays all songs in database
 
-//utility functions
-int getInt();
-int getInt(int min, int max); //getInt with bounds checking
 
 
 /*MAIN*/
@@ -76,8 +73,6 @@ int main() {
         executeCommand(input, library, size);
     } while (input != 'e');
 
-    //save and exit
-    saveSongs(library,size,SONG_FILE);
     return 0;
 }
 
@@ -120,7 +115,8 @@ void executeCommand(char command, SongType songs[], int& size)
 	        break;
 	    case 'e': //quit
             cout << "SAVING..." << endl;
-            saveSongs(songs,size,SONG_OUT_FILE);
+            aSong = songs[5];
+            if(!saveSongs(songs,size,SONG_OUT_FILE)) cout << "error saving file\n"; //save to outfile
             cout << "QUITTING..." << endl;
 	        break;
 	    default:
@@ -166,9 +162,27 @@ void loadData(SongType list[], int& size, const char infile[])
     cout << "Data imported successfully from " << infile << ". Song count: " << size << endl;
 }
 
-void searchByArtist(SongType songs[], int& size)
+void searchByArtist(SongType songs[], int& size) 
 {
-    return;
+    //get search term from user
+    char searchTerm[ARRAY_MAX_SIZE];
+    cout << "What is the name of the artist you want to find? ";
+    cin.getline(searchTerm,ARRAY_MAX_SIZE);
+    cout << "Results:\n\n";
+    int results = 0;
+    //return matches
+    for( int i = 0; i < size; i++){
+        if(strcmp(songs[i].artist,searchTerm) == 0){
+            displaySongs(songs, size, i);
+            results++;
+        }
+    }
+    if (results == 0) cout << "No Matches Found\n";
+
+    cout << "\nPress ENTER when done.";
+    cin.get(); //BUG: requires user to pres ENTER twice
+    cin.clear();
+    cin.ignore(1000,'\n');
 }
 
 void readInSong(SongType& song)
@@ -210,9 +224,21 @@ void appendSong(SongType songs[], int& size, SongType& newSong)
     size++;
     return;
 }
-void saveSongs(const SongType songs[], const int& size,const char outfile[])
+bool saveSongs(const SongType songs[], const int& size,const char outfile[])
 {
-    return;
+    //create output file
+    ofstream out{outfile};
+    //write to file
+    for(int i = 0; i < size; i++){
+        out << songs[i].songName << ';';
+        out << songs[i].artist << ';';
+        out << songs[i].lengthMin << ';';
+        out << songs[i].lengthSec << ';';
+        out << songs[i].album << '\n';
+    }
+    //close the file and create it
+    out.close();
+    return 1;
 }
 
 void removeSong(SongType songs[], int& size, int songIndex)
