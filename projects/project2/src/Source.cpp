@@ -21,6 +21,7 @@ using namespace std;
 const int ARRAY_MAX_SIZE = 128;
 const int STR_MAX_SIZE = 128;
 const char SONG_FILE[10] = "songs.txt"; //name of the source file
+const char SONG_OUT_FILE[] = "songs.out"; //output file
 
 /*DATA STRUCTURES*/
 struct SongType
@@ -41,7 +42,7 @@ void executeCommand(char command, SongType songs[], int& size);
 //program functions
 void loadData(SongType list[], int& size, const char infile[]); //loads the songs from infile
 void searchByArtist(SongType songs[], int& size); //searches for matching songs in the database and prints matches to screen
-void readInSong(SongType song); //prompts user for data to fill SongType
+void readInSong(SongType& song); //prompts user for data to fill SongType
 void appendSong(SongType songs[], int& size, SongType& newSong); //adds a new SongType to the end of the array of SongType
 void saveSongs(const SongType songs[], const int& size,const char outfile[]); //saves database to outfile
 void removeSong(SongType songs[], int& size, int songIndex); //remove song at given index
@@ -94,6 +95,8 @@ char getInput()
 void executeCommand(char command, SongType songs[], int& size)
 {
     SongType aSong;
+    int index;
+
     switch (command)
     {
 	    case 'a': //add a song
@@ -108,12 +111,16 @@ void executeCommand(char command, SongType songs[], int& size)
 	    case 'c': //remove a song by index
             cout << "REMOVE A SONG" << endl
                 << endl << "Enter the index of the song you want to remove: ";
-            removeSong(songs, size, getInt(0, size - 1));
+            cin >> index;
+            cin.ignore(1000,'\n');
+            removeSong(songs, size, index);
 	        break;
 	    case 'd': //search for a song by artist
             searchByArtist(songs, size);
 	        break;
 	    case 'e': //quit
+            cout << "SAVING..." << endl;
+            saveSongs(songs,size,SONG_OUT_FILE);
             cout << "QUITTING..." << endl;
 	        break;
 	    default:
@@ -164,9 +171,37 @@ void searchByArtist(SongType songs[], int& size)
     return;
 }
 
-void readInSong(SongType song)
+void readInSong(SongType& song)
+/*  TODO:
+    -clean user input of ';' delimiter
+    -validate user input
+*/
 {
-    return;
+    char inputString[STR_MAX_SIZE];
+    int inputInt;
+
+    cout << "Please enter song name" << endl;
+    cin.getline(inputString, STR_MAX_SIZE, '\n');
+    strcpy(song.songName,inputString);
+
+    cout << "Please enter the artist" << endl;
+    cin.getline(inputString, STR_MAX_SIZE, '\n');
+    strcpy(song.artist, inputString);
+
+    cout << "Please enter the album" << endl;
+    cin.getline(inputString, STR_MAX_SIZE, '\n');
+    strcpy(song.album, inputString);
+
+    cout << "Please enter the minutes duration" << endl;
+    cin >> inputInt;
+    song.lengthMin = inputInt;
+
+    cout << "Please enter the seconds duration" << endl;
+    cin >> inputInt;
+    song.lengthSec = inputInt;
+
+    cin.clear(); //clear the buffer
+    cin.ignore(1000,'\n');
 }
 
 void appendSong(SongType songs[], int& size, SongType& newSong)
@@ -182,7 +217,14 @@ void saveSongs(const SongType songs[], const int& size,const char outfile[])
 
 void removeSong(SongType songs[], int& size, int songIndex)
 {
-    return;
+    if(songIndex < size){ //check bounds
+        //reduce the size of the array
+        size--;
+        //move elements one space ahead
+        for(int i = songIndex; i < size; i++){
+            songs[i] = songs[i+1];
+        }
+    }else cout << "Index out of bounds!\n";
 }
 
 void displaySongs(const SongType songs[], int size, int songIndex)
@@ -197,7 +239,7 @@ void displaySongs(const SongType songs[],int size) //overload previous displaySo
             displaySongs(songs, size, i);
     }
 }
-
+/*
 int getInt()
 {
     return 0;
@@ -208,16 +250,6 @@ int getInt(int min, int max)
     return 0;
 }
 
-/*
-void SongType::readDB()
-{
-    cout << "Please enter song name" << endl;
-    cin.getline(songName, STR_MAX_SIZE, '\n');
-    cout << "Please enter the artist" << endl;
-    cin.getline(songName, STR_MAX_SIZE, '\n');
-    cout << "Please enter student gpa" << endl;
-    cin >> gpa;
-}
 
 void SongType::listDB()
 {
