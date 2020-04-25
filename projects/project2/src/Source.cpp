@@ -86,6 +86,8 @@ char getInput()
 {
 	cout << "Please enter your selection: ";
 	char userInput = getchar();
+    cin.clear();
+    cin.ignore(1000,'\n');
 	return tolower(userInput);
 }
 
@@ -100,7 +102,7 @@ void executeCommand(char command, SongType songs[], int& size)
             appendSong(songs,size,aSong);
 	        break;
 	    case 'b': //display all songs
-            cout << "DISPLAY SONGS";
+            cout << "DISPLAY SONGS\n";
             displaySongs(songs, size);
 	        break;
 	    case 'c': //remove a song by index
@@ -185,7 +187,8 @@ void removeSong(SongType songs[], int& size, int songIndex)
 
 void displaySongs(const SongType songs[], int size, int songIndex)
 {
-        cout << "Song " << songIndex << ": " << songs[songIndex].songName << " by " << songs[songIndex].artist << endl;
+        cout << "Song " << songIndex << ": " << songs[songIndex].songName << " by " << songs[songIndex].artist <<  " | " << songs[songIndex].album << endl;
+        cout <<  "     (" << songs[songIndex].lengthMin << ":" << setfill('0') << setw(2) << songs[songIndex].lengthSec << ")" << endl; //BUG: why can't I put the song length without messing up the formatting
 }
 
 void displaySongs(const SongType songs[],int size) //overload previous displaySongs() function to display all songs
