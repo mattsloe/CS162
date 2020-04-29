@@ -1,0 +1,11 @@
+TASKS:
+-------
+o Implement the member functions
+    Student () - initialize a new student object with the passed in values (initID and gpa)
+    bool isLessThanByID() - compare the current student object with one passed in by value
+    bool qualifyForHonor() - returns true if the student's gpa is higher than minGpaForHonor
+    
+o To submit
+    copy the function Student(), bool isLessThanByID() implementation in student.cpp and the testing code in app.cpp into lab4.txt
+    append the output of the app to the file using `./app >> lab4.txt`
+    drop lab4.txt into D2L dropbox
