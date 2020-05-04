@@ -1,10 +1,10 @@
-#include "student.h"
+#include "student.h"
 
 //implement the required 3 functions here
 Student::Student(const char initId[], double gpa)
 {
-	Student::gpa = gpa;
-	strcpy(Student::id,initId);
+	this.gpa = gpa;
+	strcpy(id,initId);
 }
 
 bool Student::isLessThanByID(const Student& aStudent) const
