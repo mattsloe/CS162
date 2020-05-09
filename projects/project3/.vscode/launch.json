@@ -22,7 +22,8 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "g++ build active file",
+          //  "preLaunchTask": "g++ build active file",
+          // Run Make before hitting debug
             "miDebuggerPath": "/usr/bin/gdb"
         }
     ]
