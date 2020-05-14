@@ -1,6 +1,13 @@
 #ifndef SONG_H
 #define SONG_H
 
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <cstdlib>
+#include <iomanip>
+
+using namespace std;
 /*CONSTANTS*/
 const int STR_MAX_SIZE = 128;
 
@@ -8,16 +15,16 @@ const int STR_MAX_SIZE = 128;
 class Song
 {
     private:
-        char[] title;
-        char[] artist;
         int lengthMin;
         int lengthSec;
-        char[] album;
+        char title[STR_MAX_SIZE];
+        char artist[STR_MAX_SIZE];
+        char album[STR_MAX_SIZE];
 
     public:
         /*CONSTRUCTORS*/
         Song();
-        Song(char title[], char artist, int lengthMin, int lengthSec, char[] album); //initializer
+        Song(char title[], char artist[], int lengthMin, int lengthSec, char album[]); //initializer
         Song(const Song &); //copy constructor
 
         /*ACCESSORS*/
@@ -36,6 +43,7 @@ class Song
 
        /*PRINT FUNCTION*/ 
        const void printSong();
-}
+       const void printFile(ofstream & outFile);
+};
 
 #endif

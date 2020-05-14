@@ -14,18 +14,22 @@ class SongList
 
     public:
         /*CONSTRUCTOR*/
-        SongList();
+
+        SongList(); //Default Constructor
         SongList(const char fileName[]); //creates a SongList and populates it with data from fileName
 
         /*DESTRUCTOR*/
         ~SongList();
 
         /*ACCESSOR*/
-        void displayList();
-        void findSong();
+
+        const void displayList(); //prints the list
+        const void findSong(); //finds a song in the list
 
         /*MUTATOR*/
-        void delSong();
-        void writeFile();
-}
+
+        bool addSong(Song &); //adds a song to the list
+        void delSong(); //deletes a song from the list
+        void writeFile(const char dataFile[]); //writes the dada back to the file
+};
 #endif

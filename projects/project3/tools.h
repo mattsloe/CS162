@@ -2,7 +2,7 @@
 #define TOOLS_H
 
 #include "songlist.h"
-
+const char SONG_OUT_FILE[] = "songs.out";
 /*FUNCTION PROTOTYPES*/
 
 //reads in an int from the user
