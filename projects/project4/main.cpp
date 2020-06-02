@@ -24,6 +24,7 @@ int main(){
         option = readOption();
         exeCmd(option, library);
     }while (tolower(option) != 'e');
+    library.writeFile(SONG_FILE);
 
     return 0;
     

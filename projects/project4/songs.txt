@@ -7,8 +7,9 @@ Don't Let Me Down - Recorded at Spotify Studios NYC;DIrty Heads;2;54;Spotify Sin
 Attention - Live from Spotify Studios NYC;Charlie Puth;3;42;Spotify Singles
 Everybody Talks;Neon Trees;2;57;Picture Show
 Cold Cold Cold;Cage The Elephant;3;34;Tell Me I'm Pretty
-Knights of Cydonia;Muse;6;06;Black Holes and Revelations
-Don't You Worry 'Bout A Thing;Tori Kelly;4;01;Don't You Worry 'Bout A Thing
+Knights of Cydonia;Muse;6;6;Black Holes and Revelations
+Don't You Worry 'Bout A Thing;Tori Kelly;4;1;Don't You Worry 'Bout A Thing
 I Don't Wanna;Scarlett Johansson, Beck Bennett;1;24;Sing (Original Motion Picture Soundtrack)
 Send Me A Postcard;Shocking Blue;2;41;Scorpio's Dance
 Summertime Magic;Childish Gambino;3;34;Summer Pack
+a;b;1;11;c
