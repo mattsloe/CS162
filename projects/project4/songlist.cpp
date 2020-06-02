@@ -8,11 +8,16 @@
 
 SongList::SongList()
 {
-    size = 0;
+    capacity = CAP;
+    //allocate memory for the array of songs
+    list = new Song[capacity];
+    size = 0; 
 }
 
 SongList::SongList(const char fileName[])
 {
+    capacity = CAP;
+    list = new Song[capacity];
     size = 0; //set size to zero first
     ifstream in;
     char inputLine[STR_MAX_SIZE];
@@ -55,6 +60,11 @@ SongList::SongList(const char fileName[])
 
 SongList::~SongList()
 {
+    //delete list
+    if(list){
+        delete [] list;
+        list = NULL;
+    }
 
 }
 
@@ -88,9 +98,13 @@ const void SongList::findSong()
 
 /*MUTATOR*/
 
-bool SongList::addSong(Song & newSong)
+bool SongList::addSong(Song newSong)
 {
-    list[size] = newSong;
+    //if size == cap, then grow the array
+    if(size == capacity){
+        growList();
+    }
+    list[size] = newSong; //deep copy
     size++;
     return true;
     
@@ -102,8 +116,11 @@ void SongList::delSong()
     displayList();
     cout << "Which song would you like to delete?: ";
     cin >> selection;
-    for (int i = selection-1; i < size; i++){
-        list[i] = list[i+1];
+
+    if(selection < size){
+        for (int i = selection-1; i < size; i++){
+            list[i] = list[i+1];
+        }
     }
     size--;
     displayList();
@@ -122,4 +139,20 @@ void SongList::writeFile(const char dataFile[])
         list[i].printFile(outFile);
     }
     outFile.close();
+}
+
+//adds capacity to the list when full
+void SongList::growList()
+{
+    capacity += GROWTH;
+    char tempTitle[STR_MAX_SIZE];
+
+    Song *tempList = new Song[capacity];
+    for (int i=0; i < size; i++){
+        tempList[i] = list[i]; 
+    }
+
+    delete[] list;
+    list = tempList;
+    tempList = NULL;
 }

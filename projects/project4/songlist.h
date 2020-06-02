@@ -5,12 +5,18 @@
 /*CONSTANTS*/
 const int ARRAY_MAX_SIZE = 128;
 
+const int CAP = 3;
+const int GROWTH = 2;
+
 /*Class: SongLIST*/
 class SongList
 {
     private:
-        Song list[ARRAY_MAX_SIZE];
+        Song *list;
         int size;
+        int capacity;
+
+        void growList();
 
     public:
         /*CONSTRUCTOR*/
@@ -28,7 +34,7 @@ class SongList
 
         /*MUTATOR*/
 
-        bool addSong(Song &); //adds a song to the list
+        bool addSong(Song); //adds a song to the list
         void delSong(); //deletes a song from the list
         void writeFile(const char dataFile[]); //writes the dada back to the file
 };
