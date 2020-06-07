@@ -9,11 +9,17 @@ class LinkedList
 private:
 	struct Node
 	{
+		Node (const int value) //default constructor for Node
+		{
+			data = value;
+			prev = nullptr;
+			next = nullptr;
+		}
 		int data;
 		Node * next;
 		Node * prev;
 	};
-	Node * head, * tail;
+	Node * head, * tail; //remember to update the head when appending a node to the list
 public:
 	LinkedList();
 	bool addAtBeginning(int val);
