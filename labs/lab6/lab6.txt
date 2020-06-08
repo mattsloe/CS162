@@ -1,29 +1,3 @@
-//put your implementation of LinkedList class here
-#include "list.h"
-
-LinkedList::LinkedList() //default constructor
-{
-    //create an empty list: No nodes. prev and next are nullptr
-    size = 0;
-    head = nullptr;
-    tail = nullptr;
-}
-
-bool LinkedList::addAtBeginning(int val) //appends an item at the beginning
-{
-    Node * newNodePtr = new Node(val);
-    if(newNodePtr == nullptr) return false; //make sure the new node was allocated
-    newNodePtr->next = head; //set next pointer to next item in list
-    head = newNodePtr; //set head to point to new node
-    if(size > 0){
-    newNodePtr->next->prev = newNodePtr; //set next node to point to the new node
-    }else{
-        tail = newNodePtr; //if this is a new list, set the tail to be the new node
-    }
-    size++; //increment size
-    return true;
-}
-
 bool LinkedList::remove(int val) //removes any node whose data matches val
 {
     bool flag = false;
@@ -70,26 +44,11 @@ bool LinkedList::remove(int val) //removes any node whose data matches val
     return flag;
 }
 
-void LinkedList::printForward() const //prints the list in order
-{
-    Node *node;
-    node = head;
-    cout << "Traversal in forward direction" << endl;
-    while(node != nullptr){
-            cout<<node->data<< ' ';
-            node = node->next;
-    }
-    cout << endl;
-}
-
-void LinkedList::printBackward() const //prints the list in reverse order
-{
-    Node * node;
-    node = tail;
-    cout << "Traversal in reverse direction" << endl;
-    while(node != nullptr){
-        cout << node->data << ' ';
-        node = node->prev;
-    }
-    cout << endl;
-}
+Traversal in forward direction
+12 9 7 1 10 3 
+Traversal in reverse direction
+3 10 1 7 9 12 
+Traversal in forward direction
+9 10 
+Traversal in reverse direction
+10 9 

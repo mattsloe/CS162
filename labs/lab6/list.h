@@ -19,6 +19,8 @@ private:
 		Node * next;
 		Node * prev;
 	};
+	typedef struct Node Node;
+	int size;
 	Node * head, * tail; //remember to update the head when appending a node to the list
 public:
 	LinkedList();
