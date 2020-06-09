@@ -12,12 +12,24 @@ const int GROWTH = 2;
 class SongList
 {
     private:
-        Song *list;
         int size;
-        int capacity;
-
-        void growList();
-
+       // void growList();
+        struct Node
+        {
+            Node (Song & newSong, Node * nextNode) //initialized constructor
+            {
+                data = newSong;
+                next = nextNode;
+            }
+            Song data;
+            Node * next;
+        };
+        typedef struct Node Node;
+        //next time, typedef a Nodeptr `typedef struct Node * Nodeptr`
+        typedef Node * Nodeptr;
+        Node * head, * tail; //remember to update head and tail when appending/deleting
+        bool delSong(int index); //deletes a song at a given index
+        Node * getNode(int index); //returns a pointer to node at index
     public:
         /*CONSTRUCTOR*/
 
@@ -34,7 +46,7 @@ class SongList
 
         /*MUTATOR*/
 
-        bool addSong(Song); //adds a song to the list
+        bool addSong(Song&); //adds a song to the list
         void delSong(); //deletes a song from the list
         void writeFile(const char dataFile[]); //writes the dada back to the file
 };

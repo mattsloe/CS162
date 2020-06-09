@@ -48,8 +48,10 @@ class Song
        const void printSong();
        const void printFile(ofstream & outFile);
 
-       //assignment operator overload
+       // operator overload
        const Song& operator= (const Song& aSong);
+       const bool operator < (const Song& aSong);
+       const bool operator <= (const Song& aSong);
 };
 
 #endif

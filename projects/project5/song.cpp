@@ -189,3 +189,21 @@ const Song& Song::operator= (const Song& aSong)
 
     return *this;
 }
+
+//operator overload for <
+const bool Song::operator < (const Song& aSong)
+{
+    if(strcmp(this->title, aSong.title) < 0){
+        return true;
+    }
+    return false;
+}
+
+//operator overload for <=
+const bool Song::operator <= (const Song& aSong)
+{
+    if(strcmp(this->title,aSong.title) <= 0){
+        return true;
+    }
+    return false;
+}

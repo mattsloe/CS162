@@ -8,17 +8,15 @@
 
 SongList::SongList()
 {
-    capacity = CAP;
     //allocate memory for the array of songs
-    list = new Song[capacity];
     size = 0; 
+    head = NULL;
+    tail = NULL;
 }
 
 SongList::SongList(const char fileName[])
 {
-    capacity = CAP;
-    list = new Song[capacity];
-    size = 0; //set size to zero first
+    SongList();//set size to zero first
     ifstream in;
     char inputLine[STR_MAX_SIZE];
     Song currentSong;
@@ -60,11 +58,15 @@ SongList::SongList(const char fileName[])
 
 SongList::~SongList()
 {
-    //delete list
-    if(list){
-        delete [] list;
-        list = NULL;
+    Node * current, * next;
+    current = head;
+
+    while(current != NULL){
+        next = current->next;
+        delete current;
+        current = next;
     }
+    head = NULL; //??is this necessary or does it lose scope??
 
 }
 
@@ -75,7 +77,7 @@ const void SongList::displayList()
     int num = 0;
     for (int i = 0; i < size; i++){
         cout << ++num << ". ";
-        list[i].printSong();
+        getNode(i)->data.printSong();
         cout << endl;
     }
 }
@@ -87,10 +89,10 @@ const void SongList::findSong()
     cin.get(srchArtist, STR_MAX_SIZE, '\n');
     toUpper(srchArtist);
     for (int i = 0; i < size; i++){
-        list[i].getArtist(tempArtist);
+        getNode(i)->data.getArtist(tempArtist);
         toUpper(tempArtist);
         if (strstr(tempArtist, srchArtist)){
-            list[i].printSong();
+            getNode(i)->data.printSong();
         }
     }
     cout << endl;
@@ -98,15 +100,50 @@ const void SongList::findSong()
 
 /*MUTATOR*/
 
-bool SongList::addSong(Song newSong)
+bool SongList::addSong(Song & newSong)
 {
-    //if size == cap, then grow the array
-    if(size == capacity){
-        growList();
+    Node * p;
+    /*CASE 1: Empty List*/
+    if(head == NULL){
+        head = new Node(newSong, head); //create a new node with newSong and point head to the node
+        tail = head;
+        size++;
+        return true;
+    }else{
+        p = head;
+    /*CASE 2: Non-empty List*/
+        //Find insertion point
+        while(p != NULL){
+            if(p->data <= newSong){
+                if(p->next !=NULL){
+                    if(newSong < p->next->data){
+                        //insert node after p
+                        p->next = new Node(newSong,p->next);
+                        size++;
+                        return true;
+                        //return true
+                    }
+                }else{
+                    //insert node at tail
+                    p->next = new Node(newSong, p->next);
+                    size++;
+                    tail = p->next;
+                    return true;
+                }
+            }else{
+                if(newSong < p->data){
+                    //insert node at head
+                    head = new Node(newSong, head);
+                    size++;
+                    return true;
+                }
+            }
+            p = p->next; //iterate to next node
+        }
     }
-    list[size] = newSong; //deep copy
-    size++;
-    return true;
+    cout << "Failed to add song to LinkedList" << endl;
+    return false;
+
     
 }
 
@@ -117,16 +154,44 @@ void SongList::delSong()
     cout << "Which song would you like to delete?: ";
     cin >> selection;
 
-    if(selection < size){
-        for (int i = selection-1; i < size; i++){
-            list[i] = list[i+1];
+    if(selection <= size){
+        if(!delSong(selection-1)){ //if there was an error deleting the song
+            cout << "Error with delSong(index)" << endl;
         }
     }
-    size--;
     displayList();
 
 }
 
+bool SongList::delSong(int index)
+{
+    if(index < 0 || index >= size) return false; //check index bounds
+    Node * p = head;
+    //check for empty list
+    if(head == NULL) return false;
+    //check for list size 1
+    if(size == 1){
+        delete p;
+        head = NULL; tail = NULL;
+        size--;
+        return true;
+    }
+    for(int i = 0; i < index-1; i++) p = p->next; //iterate to node before index
+    delete p->next;
+    if(index == size-1) tail = p;
+    size--;
+    return true;
+
+}
+//returns a pointer to a node at the index
+Nodeptr SongList::getNode(int index)
+{
+    //check index bounds
+    if(index < 0 || index >= size) return NULL;
+    Node * p = head;
+    for(int i = 0; i<index; i++) p = p->next; //iterate through the List
+    return p;
+}
 void SongList::writeFile(const char dataFile[])
 {
     ofstream outFile;
@@ -136,23 +201,8 @@ void SongList::writeFile(const char dataFile[])
         exit(0);
     }
     for (int i = 0; i < size; i++){
-        list[i].printFile(outFile);
+        getNode(i)->data.printFile(outFile);
     }
     outFile.close();
 }
 
-//adds capacity to the list when full
-void SongList::growList()
-{
-    capacity += GROWTH;
-    char tempTitle[STR_MAX_SIZE];
-
-    Song *tempList = new Song[capacity];
-    for (int i=0; i < size; i++){
-        tempList[i] = list[i]; 
-    }
-
-    delete[] list;
-    list = tempList;
-    tempList = NULL;
-}
