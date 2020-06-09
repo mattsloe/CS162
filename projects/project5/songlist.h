@@ -2,19 +2,13 @@
 #define SONGLIST_H
 
 #include "song.h"
-/*CONSTANTS*/
-const int ARRAY_MAX_SIZE = 128;
-
-const int CAP = 3;
-const int GROWTH = 2;
 
 /*Class: SongLIST*/
 class SongList
 {
     private:
         int size;
-       // void growList();
-        struct Node
+         struct Node
         {
             Node (Song & newSong, Node * nextNode) //initialized constructor
             {
@@ -24,9 +18,10 @@ class SongList
             Song data;
             Node * next;
         };
-        typedef struct Node Node;
+       // void growList();
+        //typedef struct Node Node;
         //next time, typedef a Nodeptr `typedef struct Node * Nodeptr`
-        typedef Node * Nodeptr;
+        //typedef Node * Nodeptr;
         Node * head, * tail; //remember to update head and tail when appending/deleting
         bool delSong(int index); //deletes a song at a given index
         Node * getNode(int index); //returns a pointer to node at index

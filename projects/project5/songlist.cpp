@@ -16,7 +16,7 @@ SongList::SongList()
 
 SongList::SongList(const char fileName[])
 {
-    SongList();//set size to zero first
+    size = 0;head=NULL;tail=NULL;//set size to zero first
     ifstream in;
     char inputLine[STR_MAX_SIZE];
     Song currentSong;
@@ -184,7 +184,7 @@ bool SongList::delSong(int index)
 
 }
 //returns a pointer to a node at the index
-Nodeptr SongList::getNode(int index)
+SongList::Node * SongList::getNode(int index)
 {
     //check index bounds
     if(index < 0 || index >= size) return NULL;
